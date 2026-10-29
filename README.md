@@ -71,9 +71,9 @@ This runs entirely inside Claude's own sandboxed code-execution environment — 
    └── scripts/
        └── check_php2shell.py
    ```
-3. Install the Python dependency:
+3. Install the dependencies:
    ```bash
-   pip install requests --break-system-packages
+   pip install -r requirements.txt --break-system-packages
    ```
 4. Restart/reload Claude Code so it picks up the new skill.
 
@@ -82,9 +82,19 @@ This runs entirely inside Claude's own sandboxed code-execution environment — 
 ```bash
 git clone <this-repo-url>
 cd php2shell-check
-pip install requests --break-system-packages
+pip install -r requirements.txt --break-system-packages
 python3 scripts/check_php2shell.py example.com
 ```
+
+**Using a virtual environment instead (recommended if you don't want `--break-system-packages`):**
+```bash
+python3 -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+python3 scripts/check_php2shell.py example.com
+```
+
+> **Why not conda/Miniconda?** This project has exactly one dependency (`requests`) with no compiled/binary components and no Python-version sensitivity — `pip` + a plain `venv` covers it with no extra install step. Conda earns its keep for projects with heavier scientific-stack dependencies; it would just be unnecessary overhead here.
 
 ## Usage
 
@@ -279,10 +289,12 @@ This is genuinely unsettled, not just a hedge:
 
 ```
 php2shell-check/
-├── SKILL.md              # Claude Skill definition (name, trigger description, usage instructions)
-├── README.md              # This file
+├── SKILL.md                  # Claude Skill definition (name, trigger description, usage instructions)
+├── README.md                  # This file
+├── requirements.txt           # Python dependencies (just `requests`)
+├── php2shell-check.skill      # Pre-packaged skill, ready to upload to Claude.ai
 └── scripts/
-    └── check_php2shell.py # The detection script
+    └── check_php2shell.py     # The detection script
 ```
 
 ## License
